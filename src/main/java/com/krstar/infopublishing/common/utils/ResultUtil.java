@@ -5,7 +5,7 @@ package com.krstar.infopublishing.common.utils;/*
     *@Modify By:
     */
 
-import com.krstar.infopublishing.common.response.ApiResult;
+import com.krstar.infopublishing.common.vo.ApiResult;
 
 public class ResultUtil {
     public static ApiResult success(Object data){

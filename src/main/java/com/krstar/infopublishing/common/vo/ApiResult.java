@@ -1,4 +1,4 @@
-package com.krstar.infopublishing.common.response;
+package com.krstar.infopublishing.common.vo;
 
 /*
     *@Author:jhy
