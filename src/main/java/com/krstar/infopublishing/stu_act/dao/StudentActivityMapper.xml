@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.krstar.infopublishing.stu_act.dao.StudentActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.krstar.infopublishing.stu_act.entity.StudentActivity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="student_id" property="studentId" jdbcType="INTEGER" />
+    <result column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="VARCHAR" />
+    <result column="gmt_update" property="gmtUpdate" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, student_id, activity_id, gmt_create, gmt_update
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from student_activity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from student_activity
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.krstar.infopublishing.stu_act.entity.StudentActivity" >
+    insert into student_activity (id, student_id, activity_id, 
+      gmt_create, gmt_update)
+    values (#{id,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, 
+      #{gmtCreate,jdbcType=VARCHAR}, #{gmtUpdate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.krstar.infopublishing.stu_act.entity.StudentActivity" >
+    insert into student_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+      <if test="gmtUpdate != null" >
+        gmt_update,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtUpdate != null" >
+        #{gmtUpdate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.krstar.infopublishing.stu_act.entity.StudentActivity" >
+    update student_activity
+    <set >
+      <if test="studentId != null" >
+        student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        activity_id = #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtUpdate != null" >
+        gmt_update = #{gmtUpdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.krstar.infopublishing.stu_act.entity.StudentActivity" >
+    update student_activity
+    set student_id = #{studentId,jdbcType=INTEGER},
+      activity_id = #{activityId,jdbcType=INTEGER},
+      gmt_create = #{gmtCreate,jdbcType=VARCHAR},
+      gmt_update = #{gmtUpdate,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
