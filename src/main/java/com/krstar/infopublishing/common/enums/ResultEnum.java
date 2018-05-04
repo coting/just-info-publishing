@@ -9,7 +9,12 @@ package com.krstar.infopublishing.common.enums;
 
 public enum  ResultEnum{
     UNKONW_ERROR(500,"未知错误"),
-    SUCCSEE(200,"成功");
+    SUCCSEE(200,"成功"),
+    NULL_OBJECT(501,"实体为空"),
+    ADD_PRIZE_ERROR(502,"插入奖品失败"),
+    GET_PRIZE_ERROR(503,"获取当前抽奖失败"),
+    JOIN_PRIZE_ERROR(504,"参与抽奖失败"),
+    FIND_STUDENT_ERROR(601,"查询指定学号的学生失败");
 
     private Integer code;
     private String msg;

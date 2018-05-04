@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.krstar.infopublishing.prize.dao.PrizeMapper" >
+  <resultMap id="BaseResultMap" type="com.krstar.infopublishing.prize.entity.Prize" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="intro_prize" property="introPrize" jdbcType="VARCHAR" />
+    <result column="sponsor" property="sponsor" jdbcType="VARCHAR" />
+    <result column="intro_sponsor" property="introSponsor" jdbcType="VARCHAR" />
+    <result column="say_sponsor" property="saySponsor" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="VARCHAR" />
+    <result column="gmt_open" property="gmtOpen" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, number, name, img, intro_prize, sponsor, intro_sponsor, say_sponsor, url, gmt_create, 
+    gmt_open
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from prize
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectCurrentPrize" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from prize
+    order   by   id   desc   limit  1
+  </select>
+
+
+  <insert id="insert" parameterType="com.krstar.infopublishing.prize.entity.Prize" >
+    insert into prize (id, number, name, 
+      img, intro_prize, sponsor, 
+      intro_sponsor, say_sponsor, url, 
+      gmt_create, gmt_open)
+    values (#{id,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{img,jdbcType=VARCHAR}, #{introPrize,jdbcType=VARCHAR}, #{sponsor,jdbcType=VARCHAR}, 
+      #{introSponsor,jdbcType=VARCHAR}, #{saySponsor,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=VARCHAR}, #{gmtOpen,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective"  parameterType="com.krstar.infopublishing.prize.entity.Prize" >
+    insert into prize
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="introPrize != null" >
+        intro_prize,
+      </if>
+      <if test="sponsor != null" >
+        sponsor,
+      </if>
+      <if test="introSponsor != null" >
+        intro_sponsor,
+      </if>
+      <if test="saySponsor != null" >
+        say_sponsor,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+      <if test="gmtOpen != null" >
+        gmt_open,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="introPrize != null" >
+        #{introPrize,jdbcType=VARCHAR},
+      </if>
+      <if test="sponsor != null" >
+        #{sponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="introSponsor != null" >
+        #{introSponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="saySponsor != null" >
+        #{saySponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtOpen != null" >
+        #{gmtOpen,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.krstar.infopublishing.prize.entity.Prize" >
+    update prize
+    <set >
+      <if test="number != null" >
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="introPrize != null" >
+        intro_prize = #{introPrize,jdbcType=VARCHAR},
+      </if>
+      <if test="sponsor != null" >
+        sponsor = #{sponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="introSponsor != null" >
+        intro_sponsor = #{introSponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="saySponsor != null" >
+        say_sponsor = #{saySponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtOpen != null" >
+        gmt_open = #{gmtOpen,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.krstar.infopublishing.prize.entity.Prize" >
+    update prize
+    set number = #{number,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      intro_prize = #{introPrize,jdbcType=VARCHAR},
+      sponsor = #{sponsor,jdbcType=VARCHAR},
+      intro_sponsor = #{introSponsor,jdbcType=VARCHAR},
+      say_sponsor = #{saySponsor,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=VARCHAR},
+      gmt_open = #{gmtOpen,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

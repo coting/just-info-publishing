@@ -17,19 +17,19 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.krstar.infopublishing.stu_act.entity" targetProject=".\src\main\java">
+        <javaModelGenerator targetPackage="com.krstar.infopublishing.student.entity" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="com.krstar.infopublishing.stu_act.dao" targetProject=".\src\main\java">
+        <sqlMapGenerator targetPackage="com.krstar.infopublishing.student.dao" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.krstar.infopublishing.stu_act.dao" targetProject=".\src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.krstar.infopublishing.student.dao" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="student_activity" domainObjectName="StudentActivity" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="student" domainObjectName="Student" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>
 </generatorConfiguration>
