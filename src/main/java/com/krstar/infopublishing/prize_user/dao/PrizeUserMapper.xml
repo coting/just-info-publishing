@@ -16,19 +16,27 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectAccountByPrizeId" resultMap="java.lang.Integer" parameterType="java.lang.Integer" >
+  <select id="selectAccountByPrizeId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
     select
-    count(<include refid="Base_Column_List" />)
+    COUNT(*)
     from prize_user
     where prize_id = #{prizeId,jdbcType=INTEGER}
   </select>
 
-  <select id="selectAccountByPrizeId" resultMap="java.util.ArrayList" parameterType="java.lang.Integer" >
+  <select id="selectJoinersByPrizeId" resultType="java.lang.String" parameterType="java.lang.Integer" >
+    select
+    user_id
+    from prize_user
+    where prize_id = #{prizeId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAcademyOfJoiners" resultType="java.lang.String" parameterType="java.lang.Integer" >
     select
     academy
-    from student
-    LEFT JOIN prize_user
-
+    from student RIGHT JOIN prize_user
+    ON
+    student.username=prize_user.user_id
+    WHERE prize_user.prize_id=#{id,jdbcType=INTEGER}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

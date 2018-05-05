@@ -8,11 +8,12 @@ package com.krstar.infopublishing.prize.entity;/*
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 public class PrizeElement {
     private Prize prize;
     private String totalJoiners;
-    private ArrayList<String> rankAcademy;
-    private ArrayList<String> rankGrade;
+    private Map<String,Integer> rankAcademy;
 }

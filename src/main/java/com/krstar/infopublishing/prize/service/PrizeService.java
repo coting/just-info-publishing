@@ -9,6 +9,7 @@ package com.krstar.infopublishing.prize.service;
 import com.krstar.infopublishing.common.vo.ApiResult;
 import com.krstar.infopublishing.prize.entity.Prize;
 import com.krstar.infopublishing.prize.entity.PrizeElement;
+import com.krstar.infopublishing.prize.entity.Winner;
 import com.krstar.infopublishing.prize_user.entity.PrizeUser;
 import com.krstar.infopublishing.student.entity.Student;
 
@@ -35,13 +36,13 @@ public interface PrizeService {
      * 获取抽奖结果
      */
 
-    PrizeUser openPrize();
+    Winner openPrize();
 
     /**
      * 显示实时参与情况
      */
 
-    PrizeElement getCurrentRank();
+    PrizeElement getCurrentData();
 
 
 

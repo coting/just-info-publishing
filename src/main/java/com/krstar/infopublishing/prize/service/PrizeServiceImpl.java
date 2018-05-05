@@ -11,6 +11,7 @@ import com.krstar.infopublishing.common.exception.InfoPublishException;
 import com.krstar.infopublishing.prize.dao.PrizeMapper;
 import com.krstar.infopublishing.prize.entity.Prize;
 import com.krstar.infopublishing.prize.entity.PrizeElement;
+import com.krstar.infopublishing.prize.entity.Winner;
 import com.krstar.infopublishing.prize_user.dao.PrizeUserMapper;
 import com.krstar.infopublishing.prize_user.entity.PrizeUser;
 import com.krstar.infopublishing.student.dao.StudentMapper;
@@ -20,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -41,7 +44,7 @@ public class PrizeServiceImpl implements PrizeService {
         try {
             prizeMapper.insertSelective(prize);
         }catch (Exception e){
-            e.printStackTrace();
+            throw new InfoPublishException(ResultEnum.ADD_PRIZE_ERROR);
         }
         return prize;
     }
@@ -60,8 +63,6 @@ public class PrizeServiceImpl implements PrizeService {
     @Override
     public Student joinPrize(String studentId) {
         Student student=null;
-        PrizeUser prizeUser=null;
-
         if(studentId==null){
             throw new InfoPublishException(ResultEnum.NULL_OBJECT);
         }
@@ -69,11 +70,12 @@ public class PrizeServiceImpl implements PrizeService {
             student=studentMapper.selectByPrimaryKey(studentId);
             Prize currentPrize=prizeMapper.selectCurrentPrize();
             Integer currentPrizeId=currentPrize.getId();
-            if(student==null){
+            if(student==null || currentPrizeId==null){
                 throw new InfoPublishException(ResultEnum.NULL_OBJECT);
             }else{
-                prizeUser.setUserId(student.getUsername());
+                PrizeUser prizeUser=new PrizeUser();
                 prizeUser.setPrizeId(currentPrizeId);
+                prizeUser.setUserId(student.getUsername());
                 try{
                     prizeUserMapper.insertSelective(prizeUser);
                 }catch (Exception e){
@@ -87,29 +89,52 @@ public class PrizeServiceImpl implements PrizeService {
     }
 
     @Override
-    public PrizeUser openPrize() {
-        return null;
+    public Winner openPrize() {
+        Winner winner=new Winner();
+        Prize prize=prizeMapper.selectCurrentPrize();
+        Student student=studentMapper.selectByPrimaryKey(prize.getGmtOpen());
+        winner.setPrize(prize);
+        winner.setStudent(student);
+        return winner;
     }
 
     @Override
-    public PrizeElement getCurrentRank() {
-        Prize prize=null;
-        PrizeElement pe=null;
-        List<String> rankAcademy=new ArrayList<String>();
-        List<String> rakGrade=new ArrayList<String>();
+    public PrizeElement getCurrentData() {
+        Prize prize;
         try {
             //获取当前抽奖实体
             prize=prizeMapper.selectCurrentPrize();
-            //根据抽奖实体id来获取参与者的总人数，学院热度，年级热度
+            //根据抽奖实体id来获取参与者的总人数
             Integer prizeId=prize.getId();
             Integer AccountOfJoiners=prizeUserMapper.selectAccountByPrizeId(prizeId);
-            ArrayList academyList=prizeMapper.selectAcademyOfJoiners(prizeId);
-
-
+            //根据抽奖实体id来获取参与者的学院热度
+            List<String> academyList=new ArrayList();
+            academyList=prizeUserMapper.selectAcademyOfJoiners(prizeId);
+            List<String> result=new ArrayList();
+            Map<String,Integer> resultMap=new HashMap<>();
+            for(String i:academyList){
+                boolean flag=false;
+                for(String j:result){
+                   if(j.equals(i)){
+                       flag=true;
+                       int temp=resultMap.get(i)+1;
+                       resultMap.put(i,temp);
+                       break;
+                   }
+                }
+                if(!flag){
+                    result.add(i);
+                    resultMap.put(i,1);
+                }
+            }
+            PrizeElement pe=new PrizeElement();
+            pe.setPrize(prize);
+            pe.setTotalJoiners(AccountOfJoiners+"");
+            pe.setRankAcademy(resultMap);
+            return pe;
         }catch (Exception e){
             throw  new InfoPublishException(ResultEnum.GET_PRIZE_ERROR);
         }
-        return null;
     }
 
 

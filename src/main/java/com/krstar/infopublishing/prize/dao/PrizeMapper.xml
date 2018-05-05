@@ -24,6 +24,9 @@
     from prize
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+
+
   <select id="selectCurrentPrize" resultMap="BaseResultMap"  >
     select
     <include refid="Base_Column_List" />

@@ -3,6 +3,7 @@ package com.krstar.infopublishing.prize.dao;
 import com.krstar.infopublishing.prize.entity.Prize;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface PrizeMapper {
     int deleteByPrimaryKey(Integer id);
@@ -19,5 +20,5 @@ public interface PrizeMapper {
 
     Prize selectCurrentPrize();
 
-    ArrayList selectAcademyOfJoiners(Integer prizeId);
+
 }

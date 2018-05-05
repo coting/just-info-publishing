@@ -2,6 +2,8 @@ package com.krstar.infopublishing.prize_user.dao;
 
 import com.krstar.infopublishing.prize_user.entity.PrizeUser;
 
+import java.util.List;
+
 public interface PrizeUserMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,4 +18,8 @@ public interface PrizeUserMapper {
     int updateByPrimaryKey(PrizeUser record);
 
     Integer selectAccountByPrizeId(Integer prizeId);
+
+    List selectAcademyOfJoiners(Integer prizeId);
+
+    List<String> selectJoinersByPrizeId(Integer currentPrizeId);
 }
