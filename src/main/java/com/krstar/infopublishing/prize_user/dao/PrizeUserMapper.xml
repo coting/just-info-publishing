@@ -30,6 +30,14 @@
     where prize_id = #{prizeId,jdbcType=INTEGER}
   </select>
 
+  <select id="selectJoinersByUserId" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from prize_user
+    where prize_id = #{1,jdbcType=INTEGER} AND user_id=#{0,jdbcType=VARCHAR}
+  </select>
+
+
   <select id="selectAcademyOfJoiners" resultType="java.lang.String" parameterType="java.lang.Integer" >
     select
     academy

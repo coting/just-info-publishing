@@ -9,6 +9,7 @@ import com.alibaba.druid.pool.vendor.InformixExceptionSorter;
 import com.krstar.infopublishing.common.enums.ResultEnum;
 import com.krstar.infopublishing.common.exception.InfoPublishException;
 import com.krstar.infopublishing.prize.dao.PrizeMapper;
+import com.krstar.infopublishing.prize.entity.AcademyJoiner;
 import com.krstar.infopublishing.prize.entity.Prize;
 import com.krstar.infopublishing.prize.entity.PrizeElement;
 import com.krstar.infopublishing.prize.entity.Winner;
@@ -20,10 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -66,20 +64,27 @@ public class PrizeServiceImpl implements PrizeService {
         if(studentId==null){
             throw new InfoPublishException(ResultEnum.NULL_OBJECT);
         }
+
         try {
-            student=studentMapper.selectByPrimaryKey(studentId);
             Prize currentPrize=prizeMapper.selectCurrentPrize();
             Integer currentPrizeId=currentPrize.getId();
-            if(student==null || currentPrizeId==null){
-                throw new InfoPublishException(ResultEnum.NULL_OBJECT);
+            //判断是否重复参与抽奖
+            PrizeUser  pu=prizeUserMapper.selectJoinersByUserId( studentId,currentPrizeId );
+            if(pu!=null){
+                throw new InfoPublishException(ResultEnum.FIND_STUDENT_ERROR);
             }else{
-                PrizeUser prizeUser=new PrizeUser();
-                prizeUser.setPrizeId(currentPrizeId);
-                prizeUser.setUserId(student.getUsername());
-                try{
-                    prizeUserMapper.insertSelective(prizeUser);
-                }catch (Exception e){
-                    throw  new InfoPublishException(ResultEnum.JOIN_PRIZE_ERROR);
+                student=studentMapper.selectByPrimaryKey(studentId);
+                if(student==null || currentPrizeId==null){
+                    throw new InfoPublishException(ResultEnum.NULL_OBJECT);
+                }else{
+                    PrizeUser prizeUser=new PrizeUser();
+                    prizeUser.setPrizeId(currentPrizeId);
+                    prizeUser.setUserId(student.getUsername());
+                    try{
+                        prizeUserMapper.insertSelective(prizeUser);
+                    }catch (Exception e){
+                        throw  new InfoPublishException(ResultEnum.JOIN_PRIZE_ERROR);
+                    }
                 }
             }
         }catch (Exception e){
@@ -127,11 +132,36 @@ public class PrizeServiceImpl implements PrizeService {
                     resultMap.put(i,1);
                 }
             }
+            List<Map.Entry<String,Integer>> resultList=new ArrayList<Map.Entry<String,Integer>>(resultMap.entrySet());
+            Collections.sort(resultList,new Comparator<Map.Entry<String,Integer>>(){
+
+                @Override
+                public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                    return o2.getValue().compareTo(o1.getValue());
+                }
+            });
+            System.out.println(resultList);
+            List<AcademyJoiner> resultAjList=new ArrayList();
+
+            System.out.println(resultList);
+            for(Map.Entry<String,Integer> mapping:resultList){
+                AcademyJoiner aj=new AcademyJoiner();
+                aj.setName(mapping.getKey());
+                aj.setNumber(mapping.getValue());
+                resultAjList.add(aj);
+            }
+
+
+            Student student=studentMapper.selectByPrimaryKey(prize.getGmtOpen());
+
             PrizeElement pe=new PrizeElement();
             pe.setPrize(prize);
             pe.setTotalJoiners(AccountOfJoiners+"");
-            pe.setRankAcademy(resultMap);
+            pe.setRankAcademy(resultAjList);
+            pe.setStudent(student);
             return pe;
+
+
         }catch (Exception e){
             throw  new InfoPublishException(ResultEnum.GET_PRIZE_ERROR);
         }

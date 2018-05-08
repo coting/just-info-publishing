@@ -35,6 +35,8 @@
   </select>
 
 
+
+
   <insert id="insert" parameterType="com.krstar.infopublishing.prize.entity.Prize" >
     insert into prize (id, number, name, 
       img, intro_prize, sponsor, 

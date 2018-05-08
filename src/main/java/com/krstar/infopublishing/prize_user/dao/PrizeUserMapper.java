@@ -1,6 +1,7 @@
 package com.krstar.infopublishing.prize_user.dao;
 
 import com.krstar.infopublishing.prize_user.entity.PrizeUser;
+import com.krstar.infopublishing.student.entity.Student;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface PrizeUserMapper {
     List selectAcademyOfJoiners(Integer prizeId);
 
     List<String> selectJoinersByPrizeId(Integer currentPrizeId);
+
+
+    PrizeUser selectJoinersByUserId(String studentId, Integer currentPrizeId);
 }
