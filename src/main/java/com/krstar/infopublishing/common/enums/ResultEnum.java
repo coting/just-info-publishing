@@ -14,7 +14,8 @@ public enum  ResultEnum{
     ADD_PRIZE_ERROR(502,"插入奖品失败"),
     GET_PRIZE_ERROR(503,"获取当前抽奖失败"),
     JOIN_PRIZE_ERROR(504,"参与抽奖失败"),
-    JOIN_PRIZE_ALREADY(506,"不能重复参与同一次抽奖"),
+    JOIN_PRIZE_ALREADY(506,"你已经参与过此次抽奖了哦"),
+    PRIZE_HAVE_OPENED(507,"此轮抽奖已经结束，敬请期待下轮"),
     GET_WINNER_ERROR(505,"获取开奖信息失败"),
     FIND_STUDENT_ERROR(601,"查询指定学号的学生失败");
 

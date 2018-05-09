@@ -7,6 +7,8 @@ package com.krstar.infopublishing.prize.controller;
     */
 
 import com.krstar.infopublishing.common.enums.ResultEnum;
+import com.krstar.infopublishing.common.exception.HaveAttenedException;
+import com.krstar.infopublishing.common.exception.HaveOpenedException;
 import com.krstar.infopublishing.common.utils.ResultUtil;
 import com.krstar.infopublishing.common.vo.ApiResult;
 import com.krstar.infopublishing.prize.entity.Prize;
@@ -59,6 +61,11 @@ public class PrizeController {
         try {
             Student result=prizeService.joinPrize(username);
             return ResultUtil.success(result);
+        }catch (HaveOpenedException e){
+            return ResultUtil.error(ResultEnum.PRIZE_HAVE_OPENED.getCode(),ResultEnum.PRIZE_HAVE_OPENED.getMsg());
+        }catch (HaveAttenedException e){
+            e.printStackTrace();
+            return ResultUtil.error(ResultEnum.JOIN_PRIZE_ALREADY.getCode(),ResultEnum.JOIN_PRIZE_ALREADY.getMsg());
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.error(ResultEnum.JOIN_PRIZE_ERROR.getCode(),ResultEnum.JOIN_PRIZE_ERROR.getMsg());

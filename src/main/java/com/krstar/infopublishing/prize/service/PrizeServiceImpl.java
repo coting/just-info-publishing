@@ -7,6 +7,8 @@ package com.krstar.infopublishing.prize.service;/*
 
 import com.alibaba.druid.pool.vendor.InformixExceptionSorter;
 import com.krstar.infopublishing.common.enums.ResultEnum;
+import com.krstar.infopublishing.common.exception.HaveAttenedException;
+import com.krstar.infopublishing.common.exception.HaveOpenedException;
 import com.krstar.infopublishing.common.exception.InfoPublishException;
 import com.krstar.infopublishing.prize.dao.PrizeMapper;
 import com.krstar.infopublishing.prize.entity.AcademyJoiner;
@@ -60,6 +62,10 @@ public class PrizeServiceImpl implements PrizeService {
 
     @Override
     public Student joinPrize(String studentId) {
+        Prize p=prizeMapper.selectCurrentPrize();
+        if(p.getGmtOpen()!=null){
+            throw new HaveOpenedException(ResultEnum.PRIZE_HAVE_OPENED);
+        }
         Student student=null;
         if(studentId==null){
             throw new InfoPublishException(ResultEnum.NULL_OBJECT);
@@ -71,7 +77,7 @@ public class PrizeServiceImpl implements PrizeService {
             //判断是否重复参与抽奖
             PrizeUser  pu=prizeUserMapper.selectJoinersByUserId( studentId,currentPrizeId );
             if(pu!=null){
-                throw new InfoPublishException(ResultEnum.FIND_STUDENT_ERROR);
+                throw new HaveAttenedException(ResultEnum.JOIN_PRIZE_ALREADY);
             }else{
                 student=studentMapper.selectByPrimaryKey(studentId);
                 if(student==null || currentPrizeId==null){
@@ -87,7 +93,11 @@ public class PrizeServiceImpl implements PrizeService {
                     }
                 }
             }
-        }catch (Exception e){
+        }catch (HaveOpenedException e){
+            throw new HaveOpenedException(ResultEnum.PRIZE_HAVE_OPENED);
+        }catch (HaveAttenedException e){
+            throw new HaveAttenedException(ResultEnum.JOIN_PRIZE_ALREADY);
+        }catch (InfoPublishException e){
             throw new InfoPublishException(ResultEnum.FIND_STUDENT_ERROR);
         }
         return student;
