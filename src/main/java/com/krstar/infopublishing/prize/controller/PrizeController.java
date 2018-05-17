@@ -54,6 +54,21 @@ public class PrizeController {
     }
 
     /**
+     * 判断该学号是否已参与当前抽奖
+     */
+    @RequestMapping(value = "/isJoined",method = RequestMethod.POST)
+    public ApiResult isJoined(String username ){
+        try {
+            String result=prizeService.isJoined(username);
+            //1代表已参与，0代表为参与
+            return ResultUtil.success(result);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.error(ResultEnum.GET_IS_JOINED_ERROR.getCode(),ResultEnum.GET_IS_JOINED_ERROR.getMsg());
+        }
+    }
+
+    /**
      * 参加抽奖
      */
     @RequestMapping(value = "/joinPrize",method = RequestMethod.POST)

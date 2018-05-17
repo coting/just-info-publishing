@@ -177,5 +177,23 @@ public class PrizeServiceImpl implements PrizeService {
         }
     }
 
+    @Override
+    public String isJoined(String username) {
+        Prize prize;
+        try{
+            //获取当前抽奖id
+            prize=prizeMapper.selectCurrentPrize();
+            Integer prizeId=prize.getId();
+            PrizeUser  pu=prizeUserMapper.selectJoinersByUserId( username,prizeId );
+            if(pu!=null){
+                return "1";
+            }else{
+                return "0";
+            }
+        }catch (Exception e){
+            throw new InfoPublishException(ResultEnum.GET_IS_JOINED_ERROR);
+        }
+    }
+
 
 }

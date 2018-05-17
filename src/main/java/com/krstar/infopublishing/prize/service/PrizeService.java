@@ -45,8 +45,5 @@ public interface PrizeService {
     PrizeElement getCurrentData();
 
 
-
-
-
-
+    String isJoined(String username);
 }
